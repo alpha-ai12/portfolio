@@ -1,9 +1,13 @@
-FROM node:alpine as builder
-WORKDIR '/app'
-COPY . .
+FROM node:18
+
+# Create app directory
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
 RUN npm install
-# lets build the application
- RUN npm run build
-FROM nginx
-EXPOSE 80
-COPY --from=builder /app/build /usr/share/nginx/html
+
+COPY . .
+
+EXPOSE 3000
+CMD [ "npm", "run", "dev" ]
